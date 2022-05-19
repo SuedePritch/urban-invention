@@ -1,0 +1,12 @@
+:root{
+    --clr-primary-500:hsl(0,100%,50%);
+
+}
+*,
+*::before,
+*::after{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
