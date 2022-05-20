@@ -1,13 +1,16 @@
 
 var questionContainerEl = document.querySelector('.question-container')
 var startButtonEl = document.getElementById('startButton')
+var scoreScreenEl = document.querySelector('.score-screen')
+var scoreEl = document.getElementById('score')
+
 var questionEl = document.getElementById('question')
 var answer0El = document.getElementById('answer0')
 var answer1El = document.getElementById('answer1')
 var answer2El = document.getElementById('answer2')
 var answer3El = document.getElementById('answer3')
 
-
+//list of questions - correct answers need to be coded into checkAnswer function
 var questions = [
     {question: "Whats up",
     answers:["Nothing Much","Doing Well", "Studying","Chillin"]},
@@ -19,7 +22,7 @@ var questions = [
     answers:["Nothing Much4","Doing Well4", "Studying4","Chillin4"]}
 ]
 let questionIndex = 0;
-// var answerIndex = null;
+let score = 0
 
 
 function loadQuestion(questionIndex){
@@ -33,22 +36,21 @@ function askQuestion(){
     if(questionIndex < questions.length){
         loadQuestion(questionIndex)
     }else{
-        console.log('Game Over');
+        questionContainerEl.setAttribute('style', "display:none");
+        scoreEl.textContent = `You got ${score} / ${questions.length}`
+        scoreScreenEl.setAttribute('style', "display:block")
+
     }
     
 }
 function checkAnswer(answerIndex){
-    if(questionIndex === 0 && answerIndex === 3){
+    if(    questionIndex === 0 && answerIndex === 3
+        || questionIndex === 1 && answerIndex === 1 
+        || questionIndex === 2 && answerIndex === 2 
+        || questionIndex === 3 && answerIndex === 3
+        ){
         console.log('correct');
-        questionIndex++
-    }else if(questionIndex === 1 && answerIndex === 1){
-        console.log('correct');
-        questionIndex++
-    }else if(questionIndex === 2 && answerIndex === 2){
-        console.log('correct');
-        questionIndex++
-    }else if(questionIndex === 3 && answerIndex === 3){
-        console.log('correct');
+        score++
         questionIndex++
     }else{
         questionIndex++

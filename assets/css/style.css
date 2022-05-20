@@ -55,6 +55,9 @@ li{
 .question-container{
     display: none;
 }
+.score-screen{
+    display: none;
+}
 #startButton{
     padding:1rem 1.5rem;
     font-size: 2em;
