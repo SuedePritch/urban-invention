@@ -27,6 +27,18 @@ function loadQuestion(questionIndex){
     answer2El.textContent = `${questions[questionIndex].answers[2]}`
     answer3El.textContent = `${questions[questionIndex].answers[3]}`
 }
+function askQuestion(){
+    loadQuestion(questionIndex)
+    //triggers when answer is chosen
+    questionContainerEl.addEventListener("click", function(event) {
+        var element = event.target;
+        if(element.matches('.answer')){
+            var answerIndex = parseInt(element.dataset.indexanswer)
+            console.log(answerIndex);
+            checkAnswer(answerIndex);
+        }
+    })
+}
 function checkAnswer(answerIndex){
     if(questionIndex === 0 && answerIndex === 3){
         console.log('correct');
@@ -42,21 +54,13 @@ function runQuiz(){
     startButtonEl.addEventListener("click", function() {
         //hides button
         startButtonEl.setAttribute('style', "display:none");
-        // loads first question
-        loadQuestion(questionIndex)
+        
         //increases questionIndex---wrong spot??
         // questionIndex++
         //displays question
         questionContainerEl.setAttribute('style', "display:block");
+        askQuestion();
     });
-    //triggers when answer is chosen
-    questionContainerEl.addEventListener("click", function(event) {
-        var element = event.target;
-        if(element.matches('.answer')){
-            var answerIndex = parseInt(element.dataset.indexanswer)
-            console.log(answerIndex);
-            checkAnswer(answerIndex);
-        }
-    })
+    
 }
 runQuiz();
