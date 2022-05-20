@@ -1,3 +1,6 @@
+
+var questionContainerEl = document.querySelector('.question-container')
+var startButtonEl = document.getElementById('startButton')
 var questionEl = document.getElementById('question')
 var answer1El = document.getElementById('answer1')
 var answer2El = document.getElementById('answer2')
@@ -11,16 +14,20 @@ var questions = [
     {question: "Whats up4",answers:["Nothing Much4","Doing Well4", "Studying4","Chillin4"]}
 ]
 
-function loadQuestion(questionNumber){
-    questionEl.textContent = `${questions[questionNumber].question}`
-    answer1El.textContent = `${questions[questionNumber].answers[0]}`
-    answer2El.textContent = `${questions[questionNumber].answers[1]}`
-    answer3El.textContent = `${questions[questionNumber].answers[2]}`
-    answer4El.textContent = `${questions[questionNumber].answers[3]}`
+function loadQuestion(questionIndex){
+    questionEl.textContent = `${questions[questionIndex].question}`
+    answer1El.textContent = `${questions[questionIndex].answers[0]}`
+    answer2El.textContent = `${questions[questionIndex].answers[1]}`
+    answer3El.textContent = `${questions[questionIndex].answers[2]}`
+    answer4El.textContent = `${questions[questionIndex].answers[3]}`
 }
-
-// loadQuestion(0);
-loadQuestion(1);
-// loadQuestion(2);
-// loadQuestion(3);
-
+function quizStart(){
+    startButtonEl.textContent = 'Start Quiz'
+    startButtonEl.addEventListener("click", function() {
+        startButtonEl.setAttribute('style', "display:none");
+        loadQuestion(0)
+        questionContainerEl.setAttribute('style', "display:block");
+        
+    });
+}
+quizStart();

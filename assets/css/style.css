@@ -51,7 +51,13 @@ li{
     justify-content: center;
     text-align: center;
     border:5px solid black;
-
+}
+.question-container{
+    display: none;
+}
+#startButton{
+    padding:1rem 1.5rem;
+    font-size: 2em;
 }
 
 
