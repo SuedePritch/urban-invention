@@ -19,6 +19,8 @@ var questions = [
     answers:["Nothing Much4","Doing Well4", "Studying4","Chillin4"]}
 ]
 let questionIndex = 0;
+// var answerIndex = null;
+
 
 function loadQuestion(questionIndex){
     questionEl.textContent = `${questions[questionIndex].question}`
@@ -28,24 +30,31 @@ function loadQuestion(questionIndex){
     answer3El.textContent = `${questions[questionIndex].answers[3]}`
 }
 function askQuestion(){
-    loadQuestion(questionIndex)
-    //triggers when answer is chosen
-    questionContainerEl.addEventListener("click", function(event) {
-        var element = event.target;
-        if(element.matches('.answer')){
-            var answerIndex = parseInt(element.dataset.indexanswer)
-            console.log(answerIndex);
-            checkAnswer(answerIndex);
-        }
-    })
+    if(questionIndex < questions.length){
+        loadQuestion(questionIndex)
+    }else{
+        console.log('Game Over');
+    }
+    
 }
 function checkAnswer(answerIndex){
     if(questionIndex === 0 && answerIndex === 3){
         console.log('correct');
+        questionIndex++
+    }else if(questionIndex === 1 && answerIndex === 1){
+        console.log('correct');
+        questionIndex++
+    }else if(questionIndex === 2 && answerIndex === 2){
+        console.log('correct');
+        questionIndex++
+    }else if(questionIndex === 3 && answerIndex === 3){
+        console.log('correct');
+        questionIndex++
     }else{
+        questionIndex++
         console.log('wrong');
     }
-    
+    askQuestion();
 }
 function runQuiz(){
     //Set button text
@@ -54,11 +63,16 @@ function runQuiz(){
     startButtonEl.addEventListener("click", function() {
         //hides button
         startButtonEl.setAttribute('style', "display:none");
-        
-        //increases questionIndex---wrong spot??
-        // questionIndex++
-        //displays question
+        //displays question container
         questionContainerEl.setAttribute('style', "display:block");
+        questionContainerEl.addEventListener("click", function(event) {
+            var element = event.target;
+            if(element.matches('.answer')){
+                var answerIndex = parseInt(element.dataset.indexanswer)
+                console.log(answerIndex);
+                checkAnswer(answerIndex);
+            }
+        })
         askQuestion();
     });
     
