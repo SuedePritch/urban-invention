@@ -13,13 +13,17 @@ var answer3El = document.getElementById('answer3')
 //list of questions - correct answers need to be coded into checkAnswer function
 var questions = [
     {question: "Whats up",
-    answers:["Nothing Much","Doing Well", "Studying","Chillin"]},
+    answers:["Nothing Much","Doing Well", "Studying","Chillin"],
+    correct: 1},
     {question: "Whats up2",
-    answers:["Nothing Much2","Doing Well2", "Studying2","Chillin2"]},
+    answers:["Nothing Much2","Doing Well2", "Studying2","Chillin2"],
+    correct: 2},
     {question: "Whats up3",
-    answers:["Nothing Much3","Doing Well3", "Studying3","Chillin3"]},
+    answers:["Nothing Much3","Doing Well3", "Studying3","Chillin3"],
+    correct: 0},
     {question: "Whats up4",
-    answers:["Nothing Much4","Doing Well4", "Studying4","Chillin4"]}
+    answers:["Nothing Much4","Doing Well4", "Studying4","Chillin4"],
+    correct: 3}
 ]
 let questionIndex = 0;
 let score = 0
@@ -44,11 +48,7 @@ function askQuestion(){
     
 }
 function checkAnswer(answerIndex){
-    if(    questionIndex === 0 && answerIndex === 3
-        || questionIndex === 1 && answerIndex === 1 
-        || questionIndex === 2 && answerIndex === 2 
-        || questionIndex === 3 && answerIndex === 3
-        ){
+    if(answerIndex === questions[questionIndex].correct){
         console.log('correct');
         score++
         questionIndex++
