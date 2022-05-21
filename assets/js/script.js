@@ -1,6 +1,7 @@
-
 var questionContainerEl = document.querySelector('.question-container')
 var startButtonEl = document.getElementById('startButton')
+var playAgainButtonEl = document.getElementById('play-again')
+var saveHighScoreButtonEl = document.getElementById('save-score')
 
 var scoreScreenEl = document.querySelector('.score-screen')
 var correctAnswersEl = document.getElementById('correctAnswers')
@@ -41,9 +42,10 @@ let questionIndex = 0;
 let correctAnswers = 0;
 let score = 0;
 
-//Need to be the same value
-var totalTime = 10; 
+//set time limit for test
+var totalTime = 15; 
 var timeLeft = totalTime;
+countdownEl.textContent = `You have ${totalTime} seconds to finish`
 
 
 function loadQuestion(questionIndex){
@@ -57,6 +59,7 @@ function loadQuestion(questionIndex){
 
 
 function askQuestion(){
+    questionContainerEl.setAttribute('style', "display:block");
     if(questionIndex < questions.length){
         loadQuestion(questionIndex)
     }else{
@@ -73,7 +76,7 @@ function checkAnswer(answerIndex){
         questionIndex++
     }else{
         questionIndex++;
-        timeLeft - 5;
+        timeLeft--;
     }
     askQuestion();
 }
@@ -85,7 +88,13 @@ function scoreScreen(){
     correctAnswersEl.textContent = `You got ${correctAnswers} / ${questions.length}`
     score = timeLeft * correctAnswers * 100
     scoreEl.textContent = `Score: ${score}`;
-    countdownEl.textContent = `${timeLeft} seconds remaining`
+    if(timeLeft > 1){
+        countdownEl.textContent = `${timeLeft} seconds remaining`
+    }else if (timeLeft == 1){
+        countdownEl.textContent = `${timeLeft} second remaining`
+    }else{
+        countdownEl.textContent = "No Time Left"
+    }
 }
 
 
@@ -107,30 +116,36 @@ function countdown() {
         },1000);
 }
 
+//Event Listeners
 
-
-function runQuiz(){
-    countdownEl.textContent = `You have ${totalTime} seconds to finish`
-    //Set button text
-    startButtonEl.textContent = 'Start Quiz'
-    //start button event
-    startButtonEl.addEventListener("click", function() {
-        countdown();
-        //hides button
-        startButtonEl.setAttribute('style', "display:none");
-        //displays question container
-        questionContainerEl.setAttribute('style', "display:block");
-        // answer click event
-        questionContainerEl.addEventListener("click", function(event) {
-            var element = event.target;
-            if(element.matches('.answer')){
-                var answerIndex = parseInt(element.dataset.indexanswer)
-                checkAnswer(answerIndex);
-            }
-        })
-        //show first question
-        askQuestion();
-    });
+//start button event
+startButtonEl.addEventListener("click", function() {
+    countdown();
+    //hides button
+    startButtonEl.setAttribute('style', "display:none");
+    //displays question container
     
-}
-runQuiz();
+    //show first question
+    askQuestion();
+});
+
+// answer click event
+questionContainerEl.addEventListener("click", function(event) {
+    var element = event.target;
+    if(element.matches('.answer')){
+        var answerIndex = parseInt(element.dataset.indexanswer)
+        checkAnswer(answerIndex);
+    }
+})
+
+playAgainButtonEl.addEventListener("click", function() {
+    //hide scorescreen
+    scoreScreenEl.setAttribute('style', "display:none")
+    //clear progress
+    questionIndex = 0
+    timeLeft = totalTime
+    //restart countdown
+    countdown();
+    //show first question
+    askQuestion();
+});

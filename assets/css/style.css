@@ -43,6 +43,11 @@ li{
     background-color: var(--clr-primary-100);
 }
 
+button{
+    margin:1rem;
+    padding:1rem 1.5rem;
+    font-size: 1em;
+}
 .quiz-container{
     width:80%;
     min-height: 400px;
@@ -61,9 +66,9 @@ li{
 .score-screen{
     display: none;
 }
-#startButton{
-    padding:1rem 1.5rem;
-    font-size: 2em;
+.buttons{
+    display: flex;
+    flex-direction: column;
 }
 
 
