@@ -1,14 +1,22 @@
-var questionContainerEl = document.querySelector('.question-container')
+//Button Handles
 var startButtonEl = document.getElementById('startButton')
 var playAgainButtonEl = document.getElementById('play-again')
 var saveHighScoreButtonEl = document.getElementById('save-score')
+var saveScoreWithInitialsButtonEl = document.getElementById('save-score-with-initials')
 
-var scoreScreenEl = document.querySelector('.score-screen')
+
+//Score Screen Handles
 var correctAnswersEl = document.getElementById('correctAnswers')
+var scoreScreenEl = document.querySelector('.score-screen')
 var scoreEl = document.getElementById('score')
 
+var highscoreScreenEl = document.querySelector('.highscore-screen')
+
+//Timer Element Handle
 var countdownEl = document.querySelector('.countdown')
 
+//Question Elements Handles
+var questionContainerEl = document.querySelector('.question-container')
 var questionEl = document.getElementById('question')
 var answer0El = document.getElementById('answer0')
 var answer1El = document.getElementById('answer1')
@@ -38,16 +46,24 @@ var questions = [
         correct: 3
     }
 ]
+
+//Global variables
+
+
 let questionIndex = 0;
 let correctAnswers = 0;
 let score = 0;
 
-//set time limit for test
+//set time limit for test in seconds
+//display countdown timer
 var totalTime = 15; 
 var timeLeft = totalTime;
 countdownEl.textContent = `You have ${totalTime} seconds to finish`
 
-
+//invoked in askQuestion()
+//provides the text content from the questions object
+//questionIndex is a number
+//questionIndex is the question number we want to display - zero based
 function loadQuestion(questionIndex){
     questionEl.textContent = `${questions[questionIndex].question}`
     answer0El.textContent = `${questions[questionIndex].answers[0]}`
@@ -57,7 +73,10 @@ function loadQuestion(questionIndex){
 }
 
 
-
+//invoked in checkAnswer(), startButtonEl, and playAgainButtonEl
+//displays question container
+//loads a question if there are questions left
+//loads scorescreen when all questions completed 
 function askQuestion(){
     questionContainerEl.setAttribute('style', "display:block");
     if(questionIndex < questions.length){
@@ -69,11 +88,18 @@ function askQuestion(){
 }
 
 
-
+//takes in answerIndex from question-container event
+//answerIndex is a number representing index of answers array
+//checks if answer chosen is the correct answer
+//increments correctAnswers used in score calculation in scoreScreen() if correct
+//marks question complete by incrementing questionIndex
+//time penalty if incorrect
+//one answer attempt per question
+//reruns askQuestion for next question or scorescreen
 function checkAnswer(answerIndex){
     if(answerIndex === questions[questionIndex].correct){
         correctAnswers++
-        questionIndex++
+        questionIndex++  
     }else{
         questionIndex++;
         timeLeft--;
@@ -81,7 +107,11 @@ function checkAnswer(answerIndex){
     askQuestion();
 }
 
-
+//invoked in countdown() and askQuestion() 
+//This hides the quiz then displays scorescreen.
+//Shows how many questions user got correct out of the total number of questions
+//Score is calculated based on num of correct answers and time remaining
+//Shows user how many seconds were left when test was finished
 function scoreScreen(){
     questionContainerEl.setAttribute('style', "display:none");
     scoreScreenEl.setAttribute('style', "display:block")
@@ -97,7 +127,7 @@ function scoreScreen(){
     }
 }
 
-
+//Countdown timer adjusts message based on time left and ends game when timer runs out
 function countdown() {
     var timeInterval = setInterval(function () {
         timeLeft--;
@@ -117,19 +147,18 @@ function countdown() {
 }
 
 //Event Listeners
-
 //start button event
+//starts timer
+//hides button
+//shows first question
 startButtonEl.addEventListener("click", function() {
     countdown();
-    //hides button
     startButtonEl.setAttribute('style', "display:none");
-    //displays question container
-    
-    //show first question
     askQuestion();
 });
 
-// answer click event
+// determines which answer is clicked. provides chosen answer to checkAnswer()
+//answerIndex is a number representing index of answers array
 questionContainerEl.addEventListener("click", function(event) {
     var element = event.target;
     if(element.matches('.answer')){
@@ -138,14 +167,22 @@ questionContainerEl.addEventListener("click", function(event) {
     }
 })
 
+//play again button event
+//hide scorescreen
+//clear progress
+//restart countdown
+//show first question
 playAgainButtonEl.addEventListener("click", function() {
-    //hide scorescreen
     scoreScreenEl.setAttribute('style', "display:none")
-    //clear progress
     questionIndex = 0
     timeLeft = totalTime
-    //restart countdown
     countdown();
-    //show first question
     askQuestion();
 });
+
+//hide scorescreen
+//display recent highscores, current score with input for initials and save button
+saveHighScoreButtonEl.addEventListener('click', function(){
+    scoreScreenEl.setAttribute('style', 'display:none');
+    highscoreScreenEl.setAttribute('style', 'display:flex');  
+})
