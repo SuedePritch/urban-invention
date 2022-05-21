@@ -1,8 +1,11 @@
 
 var questionContainerEl = document.querySelector('.question-container')
 var startButtonEl = document.getElementById('startButton')
+
 var scoreScreenEl = document.querySelector('.score-screen')
+var correctAnswersEl = document.getElementById('correctAnswers')
 var scoreEl = document.getElementById('score')
+
 var countdownEl = document.querySelector('.countdown')
 
 var questionEl = document.getElementById('question')
@@ -35,7 +38,12 @@ var questions = [
     }
 ]
 let questionIndex = 0;
-let score = 0
+let correctAnswers = 0;
+let score = 0;
+
+//Need to be the same value
+var totalTime = 10; 
+var timeLeft = totalTime;
 
 
 function loadQuestion(questionIndex){
@@ -52,9 +60,7 @@ function askQuestion(){
     if(questionIndex < questions.length){
         loadQuestion(questionIndex)
     }else{
-        questionContainerEl.setAttribute('style', "display:none");
-        scoreEl.textContent = `You got ${score} / ${questions.length}`
-        scoreScreenEl.setAttribute('style', "display:block")
+        scoreScreen();
     }
     
 }
@@ -63,28 +69,40 @@ function askQuestion(){
 
 function checkAnswer(answerIndex){
     if(answerIndex === questions[questionIndex].correct){
-        console.log('correct');
-        score++
+        correctAnswers++
         questionIndex++
     }else{
-        questionIndex++
-        console.log('wrong');
+        questionIndex++;
+        timeLeft - 5;
     }
     askQuestion();
 }
 
 
+function scoreScreen(){
+    questionContainerEl.setAttribute('style', "display:none");
+    scoreScreenEl.setAttribute('style', "display:block")
+    correctAnswersEl.textContent = `You got ${correctAnswers} / ${questions.length}`
+    score = timeLeft * correctAnswers * 100
+    scoreEl.textContent = `Score: ${score}`;
+    countdownEl.textContent = `${timeLeft} seconds remaining`
+}
+
+
 function countdown() {
-    var timeLeft = 20;
     var timeInterval = setInterval(function () {
         timeLeft--;
-        if (timeLeft > 9){
+        if(score){
+            clearInterval(timeInterval)
+        }else if (timeLeft > 99){
+            countdownEl.textContent =  `${timeLeft} seconds`;
+        }else if (timeLeft > 9){
             countdownEl.textContent =  `0:${timeLeft}`;
         }else if(timeLeft >= 1){
             countdownEl.textContent = `0:0${timeLeft}`;
         }else{
-            countdownEl.textContent = '0:00'
             clearInterval(timeInterval);
+            scoreScreen();
         }
         },1000);
 }
@@ -92,6 +110,7 @@ function countdown() {
 
 
 function runQuiz(){
+    countdownEl.textContent = `You have ${totalTime} seconds to finish`
     //Set button text
     startButtonEl.textContent = 'Start Quiz'
     //start button event
@@ -101,6 +120,7 @@ function runQuiz(){
         startButtonEl.setAttribute('style', "display:none");
         //displays question container
         questionContainerEl.setAttribute('style', "display:block");
+        // answer click event
         questionContainerEl.addEventListener("click", function(event) {
             var element = event.target;
             if(element.matches('.answer')){
@@ -108,6 +128,7 @@ function runQuiz(){
                 checkAnswer(answerIndex);
             }
         })
+        //show first question
         askQuestion();
     });
     
