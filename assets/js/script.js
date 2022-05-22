@@ -12,24 +12,11 @@ var scoreEl = document.getElementById('score')
 
 
 //set object array to localStorage for testing
-var highscores = [
-    {
-        initials: "JEBP",
-        score: 2200
-    },
-    {
-        initials: "MMA",
-        score: 5000
-    },
-    {
-        initials: "FTJ",
-        score: 4200
-    }
-]
-localStorage.setItem('highscores', JSON.stringify(highscores));
+var highscores = []
+localStorage.getItem('highscores', JSON.stringify(highscores));
 
 
-var highscoreFromLocal = JSON.parse(localStorage.getItem('highscores'))
+
 var highscoreScreenEl = document.querySelector('.highscore-screen')
 var highscoreIndex0 = document.querySelector('#highscoreIndex0')
 var highscoreIndex1 = document.querySelector('#highscoreIndex1')
@@ -43,7 +30,7 @@ var highscoreIndex8 = document.querySelector('#highscoreIndex8')
 var highscoreIndex9 = document.querySelector('#highscoreIndex9')
 var highscoreIndex10 = document.querySelector('#highscoreIndex10')
 var highscoreIndex11 = document.querySelector('#highscoreIndex11')
-var usernameEL = document.getElementById('userName')
+var initials = document.querySelector('#userName')
 
 
 
@@ -217,26 +204,37 @@ playAgainButtonEl.addEventListener("click", function() {
 });
 
 function loadHighScores(){
+    var highscoreFromLocal = JSON.parse(localStorage.getItem('highscores'))
     highscoreIndex0.textContent = `${highscoreFromLocal[0].score} ${highscoreFromLocal[0].initials}` ;
     highscoreIndex1.textContent = `${highscoreFromLocal[1].score} ${highscoreFromLocal[1].initials}` ;
     highscoreIndex2.textContent = `${highscoreFromLocal[2].score} ${highscoreFromLocal[2].initials}` ;
-    // highscoreIndex3.textContent = `${highscores[3].score} ${highscores[3].initials}` ;
-    // highscoreIndex4.textContent = `${highscores[4].score} ${highscores[4].initials}` ;
-    // highscoreIndex5.textContent = `${highscores[5].score} ${highscores[5].initials}` ;
-    // highscoreIndex6.textContent = `${highscores[6].score} ${highscores[6].initials}` ;
-    // highscoreIndex7.textContent = `${highscores[7].score} ${highscores[7].initials}` ;
-    // highscoreIndex8.textContent = `${highscores[8].score} ${highscores[8].initials}` ;
-    // highscoreIndex9.textContent = `${highscores[9].score} ${highscores[9].initials}` ;
-    // highscoreIndex10.textContent = `${highscores[10].score} ${highscores[10].initials}`;
-    // highscoreIndex11.textContent = `${highscores[11].score} ${highscores[11].initials}`;
+    highscoreIndex3.textContent = `${highscoreFromLocal[3].score} ${highscoreFromLocal[3].initials}` ;
+    highscoreIndex4.textContent = `${highscoreFromLocal[4].score} ${highscoreFromLocal[4].initials}` ;
+    highscoreIndex5.textContent = `${highscoreFromLocal[5].score} ${highscoreFromLocal[5].initials}` ;
+    highscoreIndex6.textContent = `${highscoreFromLocal[6].score} ${highscoreFromLocal[6].initials}` ;
+    highscoreIndex7.textContent = `${highscoreFromLocal[7].score} ${highscoreFromLocal[7].initials}` ;
+    highscoreIndex8.textContent = `${highscoreFromLocal[8].score} ${highscoreFromLocal[8].initials}` ;
+    highscoreIndex9.textContent = `${highscoreFromLocal[9].score} ${highscoreFromLocal[9].initials}` ;
+    highscoreIndex10.textContent = `${highscoreFromLocal[10].score} ${highscoreFromLocal[10].initials}`;
+    highscoreIndex11.textContent = `${highscoreFromLocal[11].score} ${highscoreFromLocal[11].initials}`;
 }
 //hide scorescreen
 //display recent highscores, current score with input for initials and save button
 saveHighScoreButtonEl.addEventListener('click', function(){
     scoreScreenEl.setAttribute('style', 'display:none');
-    highscoreScreenEl.setAttribute('style', 'display:flex'); 
-    // localStorage.setItem('highscores', JSON.stringify(highscores));
+    highscoreScreenEl.setAttribute('style', 'display:flex');
     loadHighScores();
-    
+})
+
+saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
+    event.preventDefault();
+    var newHighscore = {
+        initials: initials.value,
+        score: score
+    } 
+    highscores.push(newHighscore)
+    console.log(highscores);
+    localStorage.setItem('highscores', JSON.stringify(highscores));
+    loadHighScores();
     
 })
