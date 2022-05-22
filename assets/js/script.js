@@ -11,9 +11,7 @@ var scoreScreenEl = document.querySelector('.score-screen')
 var scoreEl = document.getElementById('score')
 
 
-//set object array to localStorage for testing
-var highscores = []
-localStorage.getItem('highscores', JSON.stringify(highscores));
+var highscores = JSON.parse(localStorage.getItem('highscores'))
 
 
 
@@ -142,10 +140,14 @@ function scoreScreen(){
 //the id on list items is highscoreIndex0 through highscoreIndex11
 //total of 12 list items
 function loadHighScores(){
-    var highscoreFromLocal = JSON.parse(localStorage.getItem('highscores'))
-    for(i=0; i < highscoreFromLocal.length && i < 12; i++){
-        document.querySelector(`#highscoreIndex${i}`).textContent = `${highscoreFromLocal[i].score} ${highscoreFromLocal[i].initials}` ;
+    for(i=0; i < highscores.length && i < 12; i++){
+        document.querySelector(`#highscoreIndex${i}`).textContent = `${highscores[i].score} ${highscores[i].initials}` ;
     }
+}
+
+//sorts highscores in decending order
+function sortHighscores(a,b){
+    return b.score - a.score
 }
 
 //Countdown timer adjusts message based on time left and ends game when timer runs out
@@ -213,14 +215,18 @@ saveHighScoreButtonEl.addEventListener('click', function(){
 //Update highscore array with current score and initials
 //newHighscore captures initails from #userName input
 //adds current score to array
+//runs sort and removes the lowest score if all 12 list items are filled
 saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
     event.preventDefault();
     var newHighscore = {
         initials: initials.value,
         score: score
     }
-    highscores.push(newHighscore)
-    console.log(highscores);
+    highscores.push(newHighscore);
+    highscores.sort(sortHighscores);
+    if(highscores.length == 12){
+        highscores.pop()
+    }
     localStorage.setItem('highscores', JSON.stringify(highscores));
     loadHighScores();
     
