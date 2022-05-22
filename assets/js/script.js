@@ -13,11 +13,14 @@ var scoreEl = document.getElementById('score')
 
 
 
-//High Score
+//High Score Screen
+var highscoreLinkEl = document.querySelector('.high-scores')
+var highscoreTakeQuizEl = document.querySelector('#take-quiz')
 var highscoreScreenEl = document.querySelector('.highscore-screen')
+
 var highscores = JSON.parse(localStorage.getItem('highscores'))
 var initials = document.querySelector('#userName')
-
+var userInputEl = document.querySelector('.userInput')
 
 
 //Timer Element Handle
@@ -104,14 +107,16 @@ function askQuestion(){
 //time penalty if incorrect
 //one answer attempt per question
 //reruns askQuestion for next question or scorescreen
+//ensures userInput is displayed as it is hidden if view high scores is pressed
 function checkAnswer(answerIndex){
     if(answerIndex === questions[questionIndex].correct){
         correctAnswers++
         questionIndex++  
     }else{
         questionIndex++;
-        timeLeft--;
+        timeLeft -= 10;
     }
+    userInputEl.setAttribute('style', "display:flex");
     askQuestion();
 }
 
@@ -135,6 +140,7 @@ function scoreScreen(){
     }
 }
 
+//invoked in saveHighcoreButtonEl, view highscore link
 //retireves high scores from localstorage
 //iterates through highscore array displaying textContent for each list item  
 //the id on list items is highscoreIndex0 through highscoreIndex11
@@ -170,11 +176,36 @@ function countdown() {
 }
 
 //Event Listeners
+//link in nav bar
+//hides previous elements
+//displays score screen and takequiz button
+highscoreLinkEl.addEventListener('click', function(){
+    scoreScreenEl.setAttribute('style', 'display:none');
+    questionContainerEl.setAttribute('style', 'display:none');
+    startButtonEl.setAttribute('style', "display:none");
+    userInputEl.setAttribute('style', "display:none");
+
+    highscoreScreenEl.setAttribute('style', 'display:flex');
+    highscoreTakeQuizEl.setAttribute('style', 'display:flex')
+    loadHighScores();
+
+})
+
+
 //start button event
 //starts timer
 //hides button
 //shows first question
 startButtonEl.addEventListener("click", function() {
+    countdown();
+    startButtonEl.setAttribute('style', "display:none");
+    askQuestion();
+    
+});
+//similar to start button
+//hide previous elements
+highscoreTakeQuizEl.addEventListener("click", function() {
+    highscoreScreenEl.setAttribute('style', 'display:none');
     countdown();
     startButtonEl.setAttribute('style', "display:none");
     askQuestion();
@@ -206,8 +237,10 @@ playAgainButtonEl.addEventListener("click", function() {
 
 //hide scorescreen
 //display recent highscores, current score with input for initials and save button
+//ensures userInput is displayed as it is hidden if view high scores is pressed
 saveHighScoreButtonEl.addEventListener('click', function(){
     scoreScreenEl.setAttribute('style', 'display:none');
+    userInputEl.setAttribute('style', 'display:flex')
     highscoreScreenEl.setAttribute('style', 'display:flex');
     loadHighScores();
 })
@@ -224,7 +257,7 @@ saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
     }
     highscores.push(newHighscore);
     highscores.sort(sortHighscores);
-    if(highscores.length == 12){
+    if(highscores.length == 13){
         highscores.pop()
     }
     localStorage.setItem('highscores', JSON.stringify(highscores));
