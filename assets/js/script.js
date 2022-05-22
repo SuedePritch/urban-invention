@@ -11,11 +11,11 @@ var scoreScreenEl = document.querySelector('.score-screen')
 var scoreEl = document.getElementById('score')
 
 
-var highscores = JSON.parse(localStorage.getItem('highscores'))
 
 
-
+//High Score
 var highscoreScreenEl = document.querySelector('.highscore-screen')
+var highscores = JSON.parse(localStorage.getItem('highscores'))
 var initials = document.querySelector('#userName')
 
 
@@ -34,24 +34,24 @@ var answer3El = document.getElementById('answer3')
 //list of questions - correct answers are index of answers array
 var questions = [
     {
-        question: "Whats up",
-        answers:["Nothing Much","Doing Well", "Studying","Chillin"],
+        question: "Which is NOT a Javascript data type",
+        answers:["Number","Boolean", "Object","DOM"],
         correct: 3
     },
     {
-        question: "Whats up2",
-        answers:["Nothing Much2","Doing Well2", "Studying2","Chillin2"],
+        question: "What is === operator?",
+        answers:["Equal","Concurrent","Equal in value", "Equal in value and type"],
         correct: 3
     },
     {
-        question: "Whats up3",
-        answers:["Nothing Much3","Doing Well3", "Studying3","Chillin3"],
+        question: "Adding Javascript to a HTML page uses the _____ tag",
+        answers:["<script>","<link>", "<head>","<javascript>"],
         correct: 0
     },
     {
-        question: "Whats up4",
-        answers:["Nothing Much4","Doing Well4", "Studying4","Chillin4"],
-        correct: 3
+        question: "What is the difference between an alert and a confirm prompt?",
+        answers:["Both the same","Confirm allows text input", "Alert is informational, Confirm asks cancel/ok","Alert allows text input"],
+        correct: 2
     }
 ]
 
@@ -64,7 +64,7 @@ let score = 0;
 
 //set time limit for test in seconds
 //display countdown timer
-var totalTime = 15; 
+var totalTime = 60; 
 var timeLeft = totalTime;
 countdownEl.textContent = `You have ${totalTime} seconds to finish`
 
@@ -124,7 +124,7 @@ function scoreScreen(){
     questionContainerEl.setAttribute('style', "display:none");
     scoreScreenEl.setAttribute('style', "display:block")
     correctAnswersEl.textContent = `You got ${correctAnswers} / ${questions.length}`
-    score = timeLeft * correctAnswers * 100
+    score = timeLeft * correctAnswers * 57
     scoreEl.textContent = `Score: ${score}`;
     if(timeLeft > 1){
         countdownEl.textContent = `${timeLeft} seconds remaining`
