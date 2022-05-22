@@ -18,18 +18,6 @@ localStorage.getItem('highscores', JSON.stringify(highscores));
 
 
 var highscoreScreenEl = document.querySelector('.highscore-screen')
-var highscoreIndex0 = document.querySelector('#highscoreIndex0')
-var highscoreIndex1 = document.querySelector('#highscoreIndex1')
-var highscoreIndex2 = document.querySelector('#highscoreIndex2')
-var highscoreIndex3 = document.querySelector('#highscoreIndex3')
-var highscoreIndex4 = document.querySelector('#highscoreIndex4')
-var highscoreIndex5 = document.querySelector('#highscoreIndex5')
-var highscoreIndex6 = document.querySelector('#highscoreIndex6')
-var highscoreIndex7 = document.querySelector('#highscoreIndex7')
-var highscoreIndex8 = document.querySelector('#highscoreIndex8')
-var highscoreIndex9 = document.querySelector('#highscoreIndex9')
-var highscoreIndex10 = document.querySelector('#highscoreIndex10')
-var highscoreIndex11 = document.querySelector('#highscoreIndex11')
 var initials = document.querySelector('#userName')
 
 
@@ -50,12 +38,12 @@ var questions = [
     {
         question: "Whats up",
         answers:["Nothing Much","Doing Well", "Studying","Chillin"],
-        correct: 1
+        correct: 3
     },
     {
         question: "Whats up2",
         answers:["Nothing Much2","Doing Well2", "Studying2","Chillin2"],
-        correct: 2
+        correct: 3
     },
     {
         question: "Whats up3",
@@ -149,6 +137,17 @@ function scoreScreen(){
     }
 }
 
+//retireves high scores from localstorage
+//iterates through highscore array displaying textContent for each list item  
+//the id on list items is highscoreIndex0 through highscoreIndex11
+//total of 12 list items
+function loadHighScores(){
+    var highscoreFromLocal = JSON.parse(localStorage.getItem('highscores'))
+    for(i=0; i < highscoreFromLocal.length && i < 12; i++){
+        document.querySelector(`#highscoreIndex${i}`).textContent = `${highscoreFromLocal[i].score} ${highscoreFromLocal[i].initials}` ;
+    }
+}
+
 //Countdown timer adjusts message based on time left and ends game when timer runs out
 function countdown() {
     var timeInterval = setInterval(function () {
@@ -203,21 +202,6 @@ playAgainButtonEl.addEventListener("click", function() {
     askQuestion();
 });
 
-function loadHighScores(){
-    var highscoreFromLocal = JSON.parse(localStorage.getItem('highscores'))
-    highscoreIndex0.textContent = `${highscoreFromLocal[0].score} ${highscoreFromLocal[0].initials}` ;
-    highscoreIndex1.textContent = `${highscoreFromLocal[1].score} ${highscoreFromLocal[1].initials}` ;
-    highscoreIndex2.textContent = `${highscoreFromLocal[2].score} ${highscoreFromLocal[2].initials}` ;
-    highscoreIndex3.textContent = `${highscoreFromLocal[3].score} ${highscoreFromLocal[3].initials}` ;
-    highscoreIndex4.textContent = `${highscoreFromLocal[4].score} ${highscoreFromLocal[4].initials}` ;
-    highscoreIndex5.textContent = `${highscoreFromLocal[5].score} ${highscoreFromLocal[5].initials}` ;
-    highscoreIndex6.textContent = `${highscoreFromLocal[6].score} ${highscoreFromLocal[6].initials}` ;
-    highscoreIndex7.textContent = `${highscoreFromLocal[7].score} ${highscoreFromLocal[7].initials}` ;
-    highscoreIndex8.textContent = `${highscoreFromLocal[8].score} ${highscoreFromLocal[8].initials}` ;
-    highscoreIndex9.textContent = `${highscoreFromLocal[9].score} ${highscoreFromLocal[9].initials}` ;
-    highscoreIndex10.textContent = `${highscoreFromLocal[10].score} ${highscoreFromLocal[10].initials}`;
-    highscoreIndex11.textContent = `${highscoreFromLocal[11].score} ${highscoreFromLocal[11].initials}`;
-}
 //hide scorescreen
 //display recent highscores, current score with input for initials and save button
 saveHighScoreButtonEl.addEventListener('click', function(){
@@ -226,12 +210,15 @@ saveHighScoreButtonEl.addEventListener('click', function(){
     loadHighScores();
 })
 
+//Update highscore array with current score and initials
+//newHighscore captures initails from #userName input
+//adds current score to array
 saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
     event.preventDefault();
     var newHighscore = {
         initials: initials.value,
         score: score
-    } 
+    }
     highscores.push(newHighscore)
     console.log(highscores);
     localStorage.setItem('highscores', JSON.stringify(highscores));
