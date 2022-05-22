@@ -10,7 +10,42 @@ var correctAnswersEl = document.getElementById('correctAnswers')
 var scoreScreenEl = document.querySelector('.score-screen')
 var scoreEl = document.getElementById('score')
 
+
+//set object array to localStorage for testing
+var highscores = [
+    {
+        initials: "JEBP",
+        score: 2200
+    },
+    {
+        initials: "MMA",
+        score: 5000
+    },
+    {
+        initials: "FTJ",
+        score: 4200
+    }
+]
+localStorage.setItem('highscores', JSON.stringify(highscores));
+
+
+var highscoreFromLocal = JSON.parse(localStorage.getItem('highscores'))
 var highscoreScreenEl = document.querySelector('.highscore-screen')
+var highscoreIndex0 = document.querySelector('#highscoreIndex0')
+var highscoreIndex1 = document.querySelector('#highscoreIndex1')
+var highscoreIndex2 = document.querySelector('#highscoreIndex2')
+var highscoreIndex3 = document.querySelector('#highscoreIndex3')
+var highscoreIndex4 = document.querySelector('#highscoreIndex4')
+var highscoreIndex5 = document.querySelector('#highscoreIndex5')
+var highscoreIndex6 = document.querySelector('#highscoreIndex6')
+var highscoreIndex7 = document.querySelector('#highscoreIndex7')
+var highscoreIndex8 = document.querySelector('#highscoreIndex8')
+var highscoreIndex9 = document.querySelector('#highscoreIndex9')
+var highscoreIndex10 = document.querySelector('#highscoreIndex10')
+var highscoreIndex11 = document.querySelector('#highscoreIndex11')
+var usernameEL = document.getElementById('userName')
+
+
 
 //Timer Element Handle
 var countdownEl = document.querySelector('.countdown')
@@ -155,6 +190,7 @@ startButtonEl.addEventListener("click", function() {
     countdown();
     startButtonEl.setAttribute('style', "display:none");
     askQuestion();
+    
 });
 
 // determines which answer is clicked. provides chosen answer to checkAnswer()
@@ -180,9 +216,27 @@ playAgainButtonEl.addEventListener("click", function() {
     askQuestion();
 });
 
+function loadHighScores(){
+    highscoreIndex0.textContent = `${highscoreFromLocal[0].score} ${highscoreFromLocal[0].initials}` ;
+    highscoreIndex1.textContent = `${highscoreFromLocal[1].score} ${highscoreFromLocal[1].initials}` ;
+    highscoreIndex2.textContent = `${highscoreFromLocal[2].score} ${highscoreFromLocal[2].initials}` ;
+    // highscoreIndex3.textContent = `${highscores[3].score} ${highscores[3].initials}` ;
+    // highscoreIndex4.textContent = `${highscores[4].score} ${highscores[4].initials}` ;
+    // highscoreIndex5.textContent = `${highscores[5].score} ${highscores[5].initials}` ;
+    // highscoreIndex6.textContent = `${highscores[6].score} ${highscores[6].initials}` ;
+    // highscoreIndex7.textContent = `${highscores[7].score} ${highscores[7].initials}` ;
+    // highscoreIndex8.textContent = `${highscores[8].score} ${highscores[8].initials}` ;
+    // highscoreIndex9.textContent = `${highscores[9].score} ${highscores[9].initials}` ;
+    // highscoreIndex10.textContent = `${highscores[10].score} ${highscores[10].initials}`;
+    // highscoreIndex11.textContent = `${highscores[11].score} ${highscores[11].initials}`;
+}
 //hide scorescreen
 //display recent highscores, current score with input for initials and save button
 saveHighScoreButtonEl.addEventListener('click', function(){
     scoreScreenEl.setAttribute('style', 'display:none');
-    highscoreScreenEl.setAttribute('style', 'display:flex');  
+    highscoreScreenEl.setAttribute('style', 'display:flex'); 
+    // localStorage.setItem('highscores', JSON.stringify(highscores));
+    loadHighScores();
+    
+    
 })
