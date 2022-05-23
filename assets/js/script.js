@@ -17,8 +17,24 @@ var scoreEl = document.getElementById('score')
 var highscoreLinkEl = document.querySelector('.high-scores')
 var highscoreTakeQuizEl = document.querySelector('#take-quiz')
 var highscoreScreenEl = document.querySelector('.highscore-screen')
+//get highscores and if there are none in local storage load default scores
+//this is done so the array isnt null when pushing newHighscore
+let highscores = JSON.parse(localStorage.getItem('highscores'))|| 
+[
+    {initials:'James', score:12290},
+    {initials:'Maggie', score:12230},
+    {initials:'Jeremy', score:11240},
+    {initials:'Nancy', score:11190},
+    {initials:'Tyrone', score:11120},
+    {initials:'Mike', score:10460},
+    {initials:'Ted', score:10262},
+    {initials:'Holly', score:9260},
+    {initials:'Brad', score:8290},
+    {initials:'Jennifer', score:6290},
+    {initials:'Jim', score:290},
+    {initials:'Frank', score:290},
+];
 
-var highscores = JSON.parse(localStorage.getItem('highscores'))
 var initials = document.querySelector('#userName')
 var userInputEl = document.querySelector('.userInput')
 
@@ -230,7 +246,6 @@ questionContainerEl.addEventListener("click", function(event) {
 playAgainButtonEl.addEventListener("click", function() {
     scoreScreenEl.setAttribute('style', "display:none")
     questionIndex = 0
-    timeLeft = totalTime
     countdown();
     askQuestion();
 });
@@ -240,6 +255,7 @@ playAgainButtonEl.addEventListener("click", function() {
 //ensures userInput is displayed as it is hidden if view high scores is pressed
 saveHighScoreButtonEl.addEventListener('click', function(){
     scoreScreenEl.setAttribute('style', 'display:none');
+    highscoreTakeQuizEl.setAttribute('style', 'display:none')
     userInputEl.setAttribute('style', 'display:flex')
     highscoreScreenEl.setAttribute('style', 'display:flex');
     loadHighScores();
