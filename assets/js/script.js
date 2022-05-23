@@ -246,6 +246,9 @@ questionContainerEl.addEventListener("click", function(event) {
 playAgainButtonEl.addEventListener("click", function() {
     scoreScreenEl.setAttribute('style', "display:none")
     questionIndex = 0
+    correctAnswers = 0
+    score = 0
+    timeLeft = totalTime
     countdown();
     askQuestion();
 });
