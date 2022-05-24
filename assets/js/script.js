@@ -9,6 +9,7 @@ var saveScoreWithInitialsButtonEl = document.getElementById('save-score-with-ini
 var correctAnswersEl = document.getElementById('correctAnswers')
 var scoreScreenEl = document.querySelector('.score-screen')
 var scoreEl = document.getElementById('score')
+var finshedInSecondsEL = document.getElementById('test-time-completed')
 
 
 
@@ -21,18 +22,18 @@ var highscoreScreenEl = document.querySelector('.highscore-screen')
 //this is done so the array isnt null when pushing newHighscore
 let highscores = JSON.parse(localStorage.getItem('highscores'))|| 
 [
-    {initials:'James', score:12290},
-    {initials:'Maggie', score:12230},
-    {initials:'Jeremy', score:11240},
-    {initials:'Nancy', score:11190},
-    {initials:'Tyrone', score:11120},
-    {initials:'Mike', score:10460},
-    {initials:'Ted', score:10262},
-    {initials:'Holly', score:9260},
-    {initials:'Brad', score:8290},
-    {initials:'Jennifer', score:6290},
-    {initials:'Jim', score:290},
-    {initials:'Frank', score:290},
+    {initials:'JEBP', score:12290},
+    {initials:'LRS', score:12230},
+    {initials:'TTG', score:11240},
+    {initials:'RBF', score:11190},
+    {initials:'MSM', score:11120},
+    {initials:'LUNA', score:10460},
+    {initials:'GREG', score:10262},
+    {initials:'TimC', score:9260},
+    {initials:'MIKE', score:8290},
+    {initials:'BAI', score:6290},
+    {initials:'MLC', score:290},
+    {initials:'JED', score:290},
 ];
 
 var initials = document.querySelector('#userName')
@@ -87,6 +88,11 @@ var totalTime = 60;
 var timeLeft = totalTime;
 countdownEl.textContent = `You have ${totalTime} seconds to finish`
 
+//disables save high score button if score doesnt make top 12
+if(score < highscores[11].score){
+    saveScoreWithInitialsButtonEl.setAttribute('disabled','true')
+    saveScoreWithInitialsButtonEl.textContent = 'GIT GUD'
+}
 //invoked in askQuestion()
 //provides the text content from the questions object
 //questionIndex is a number
@@ -122,18 +128,27 @@ function askQuestion(){
 //marks question complete by incrementing questionIndex
 //time penalty if incorrect
 //one answer attempt per question
+//adds animation for correct and wrong answers
 //reruns askQuestion for next question or scorescreen
 //ensures userInput is displayed as it is hidden if view high scores is pressed
 function checkAnswer(answerIndex){
+    var selectedAnswerDivHelper = `answer${answerIndex}`
+    var selectedAnswerDivEl = document.getElementById(selectedAnswerDivHelper)
     if(answerIndex === questions[questionIndex].correct){
+        selectedAnswerDivEl.classList.add('correct-animation')
         correctAnswers++
         questionIndex++  
     }else{
+        selectedAnswerDivEl.classList.add('wrong-animation')
         questionIndex++;
         timeLeft -= 10;
     }
-    userInputEl.setAttribute('style', "display:flex");
-    askQuestion();
+    setTimeout(() => {
+        selectedAnswerDivEl.classList.remove('correct-animation')
+        selectedAnswerDivEl.classList.remove('wrong-animation')
+        userInputEl.setAttribute('style', "display:flex");
+        askQuestion();
+    }, "300")
 }
 
 //invoked in countdown() and askQuestion() 
@@ -145,6 +160,7 @@ function scoreScreen(){
     questionContainerEl.setAttribute('style', "display:none");
     scoreScreenEl.setAttribute('style', "display:block")
     correctAnswersEl.textContent = `You got ${correctAnswers} / ${questions.length}`
+    finshedInSecondsEL.textContent = `You completed the test in ${totalTime - timeLeft} seconds`
     score = timeLeft * correctAnswers * 57
     scoreEl.textContent = `Score: ${score}`;
     if(timeLeft > 1){
@@ -181,11 +197,13 @@ function countdown() {
         }else if (timeLeft > 99){
             countdownEl.textContent =  `${timeLeft} seconds`;
         }else if (timeLeft > 9){
-            countdownEl.textContent =  `0:${timeLeft}`;
+            countdownEl.textContent =  `TIME: 0:${timeLeft}`;
         }else if(timeLeft >= 1){
-            countdownEl.textContent = `0:0${timeLeft}`;
+            countdownEl.textContent = `TIME: 0:0${timeLeft}`;
         }else{
             clearInterval(timeInterval);
+            highscoreScreenEl.setAttribute('style', 'display:none');
+            highscoreTakeQuizEl.setAttribute('style', 'display:none')
             scoreScreen();
         }
         },1000);
@@ -266,6 +284,7 @@ saveHighScoreButtonEl.addEventListener('click', function(){
 
 //Update highscore array with current score and initials
 //newHighscore captures initails from #userName input
+//disables if current score has been entered
 //adds current score to array
 //runs sort and removes the lowest score if all 12 list items are filled
 saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
@@ -276,6 +295,7 @@ saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
     }
     highscores.push(newHighscore);
     highscores.sort(sortHighscores);
+    saveScoreWithInitialsButtonEl.setAttribute('disabled','true')
     if(highscores.length == 13){
         highscores.pop()
     }
