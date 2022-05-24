@@ -88,11 +88,6 @@ var totalTime = 60;
 var timeLeft = totalTime;
 countdownEl.textContent = `You have ${totalTime} seconds to finish`
 
-//disables save high score button if score doesnt make top 12
-if(score < highscores[11].score){
-    saveScoreWithInitialsButtonEl.setAttribute('disabled','true')
-    saveScoreWithInitialsButtonEl.textContent = 'GIT GUD'
-}
 //invoked in askQuestion()
 //provides the text content from the questions object
 //questionIndex is a number
@@ -284,6 +279,7 @@ saveHighScoreButtonEl.addEventListener('click', function(){
 
 //Update highscore array with current score and initials
 //newHighscore captures initails from #userName input
+//disables save high score button if score doesnt make top 12
 //disables if current score has been entered
 //adds current score to array
 //runs sort and removes the lowest score if all 12 list items are filled
@@ -292,6 +288,10 @@ saveScoreWithInitialsButtonEl.addEventListener('click', function(event){
     var newHighscore = {
         initials: initials.value,
         score: score
+    }
+    if(score < highscores[11].score){
+        saveScoreWithInitialsButtonEl.setAttribute('disabled','true')
+        saveScoreWithInitialsButtonEl.textContent = 'GIT GUD'
     }
     highscores.push(newHighscore);
     highscores.sort(sortHighscores);
